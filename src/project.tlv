@@ -67,24 +67,7 @@
 // A simple Makerchip Verilog test bench driving random stimulus.
 // Modify the module contents to your needs.
 // ================================================
-
-module top(input logic clk, input logic reset, input logic [31:0] cyc_cnt, output logic passed, output logic failed);
-   // Tiny tapeout I/O signals.
-   logic [7:0] ui_in, uo_out;
-   m5_if_neq(m5_target, FPGA, ['logic [7:0]uio_in,  uio_out, uio_oe;'])
-   logic [31:0] r;
-   always @(posedge clk) r <= m5_if_defined_as(MAKERCHIP, 1, ['$urandom()'], ['0']);
-   assign ui_in = r[7:0];
-   m5_if_neq(m5_target, FPGA, ['assign uio_in = 8'b0;'])
-   logic ena = 1'b0;
-   logic rst_n = ! reset;
-   
-   // Instantiate the Tiny Tapeout module.
-   m5_user_module_name tt(.*);
-   
-   assign passed = top.cyc_cnt > 80;
-   assign failed = 1'b0;
-endmodule
+//...
 
 
 // Provide a wrapper module to debounce input signals if requested.
