@@ -43,38 +43,21 @@
 
 \TLV calc()
    
-   |calc
-      @0
-         $reset = *reset;
-      @1
-         $val1[7:0] = >>1$out;
-         $val2[7:0] = {4'b0, *ui_in[3:0]};
-         $op[1:0] = *ui_in[5:4];
-         $equals_in = *ui_in[7];
-         $valid = $reset ? 1'b0 : $equals_in && ! >>1$equals_in;
-      
-         $sum[7:0] = $val1 + $val2;
-         $diff[7:0] = $val1 - $val2;
-         $prod[7:0] = $val1 * $val2;
-         $quot[7:0] = $val1 / $val2;
-
-         $out[7:0] = $reset ? 8'b0 :
-                     ! $valid ? >>1$out :
-                     ($op[1:0] == 2'b00) ? $sum  :
-                     ($op[1:0] == 2'b01) ? $diff :
-                     ($op[1:0] == 2'b10) ? $prod :
-                                           $quot;
-
-         
-         
-         m5+sseg_decoder($segments, $out[3:0])
-         *uo_out = {1'b0, ~$segments};
-
+   
+   // ==================
+   // |                |
+   // | YOUR CODE HERE |
+   // |                |
+   // ==================
+   
+   // Note that pipesignals assigned here can be found under /fpga_pins/fpga.
+   
+   
 
    m5+cal_viz(@1, m5_if(m5_in_fpga, /fpga, /top))
    
    // Connect Tiny Tapeout outputs. Note that uio_ outputs are not available in the Tiny-Tapeout-3-based FPGA boards.
-   ///*uo_out = 8'b0;
+   *uo_out = 8'b0;
    m5_if_neq(m5_target, FPGA, ['*uio_out = 8'b0;'])
    m5_if_neq(m5_target, FPGA, ['*uio_oe = 8'b0;'])
 
@@ -90,7 +73,7 @@ module top(input logic clk, input logic reset, input logic [31:0] cyc_cnt, outpu
    logic [7:0] ui_in, uo_out;
    m5_if_neq(m5_target, FPGA, ['logic [7:0]uio_in,  uio_out, uio_oe;'])
    logic [31:0] r;
-   always @(posedge clk) r <= m5_if_defined_as(m5_MAKERCHIP, 1, ['$urandom()'], ['0']);
+   always @(posedge clk) r <= m5_if_defined_as(MAKERCHIP, 1, ['$urandom()'], ['0']);
    assign ui_in = r[7:0];
    m5_if_neq(m5_target, FPGA, ['assign uio_in = 8'b0;'])
    logic ena = 1'b0;
